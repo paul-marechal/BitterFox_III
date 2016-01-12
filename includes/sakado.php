@@ -1,10 +1,12 @@
 <?php
+// Autoloader...
 function __autoload($class) {include_once "model/$class.php";}
 
-// Arg
-function get($field) {return isset($_GET[$field]) ? $_GET[$field] : null;}
-function post($field) {return isset($_POST[$field]) ? $_POST[$field] : null;}
+// Arg...
+function get$($field) {return isset($_GET[$field]) ? $_GET[$field] : null;}
+function post$($field) {return isset($_POST[$field]) ? $_POST[$field] : null;}
 
+// Listing d'un dossier et extraction chemin/fichier
 function ls($dir, $callback=null) {
 	$result = array();
 	$realdir = realpath($dir);

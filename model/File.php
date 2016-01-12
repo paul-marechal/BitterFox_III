@@ -51,6 +51,7 @@ class File {
 		return $this->write($this->read().$data);
 	}
 	
+	// Tests
 	public function isWritable(){return is_writable($this->_path);}
 	public function isReadable(){return is_readable($this->_path);}
 	public function isFolder()	{return is_dir($this->_path);}

@@ -9,16 +9,6 @@ class Folder {
 		$this->setPath($path);
 	}
 	
-	// Pour savoir hein
-	function size() {
-		return count($this->_tree);
-	}
-	
-	// Pour le debug
-	function dump_tree() {
-		return grab_dump($this->_tree);
-	}
-	
 	// On change de chemin
 	public function setPath($path) {
 		
@@ -49,7 +39,7 @@ class Folder {
 			$file = $this->getFile($i);
 			if ($filter ? $filter($file) : true) {
 				if($file !== false) {
-					$files[] = $format ? $format($FILE) : $file;
+					$files[] = $format ? $format($file) : $file;
 				}
 			}
 		}
@@ -57,6 +47,8 @@ class Folder {
 		// Puis on envoie le tout
 		return $files;
 	}
+	
+	public function isWritable() {return is_writable($this->_path);}
 	
 	// Get basename
 	public function base() {
@@ -66,6 +58,23 @@ class Folder {
 	// Get owner
 	public function owner() {
 		return posix_getpwuid(fileowner($this->_path));
+	}
+	
+	// Pour savoir hein
+	function size() {
+		return count($this->_tree);
+	}
+	
+	// Pour le debug
+	function dump_tree() {
+		return grab_dump($this->_tree);
+	}
+	
+	// Renvoie un fichier d'après le dossier mis en cache
+	public function getFile($id) {
+		if (isset($this->tree[$id]))
+			 return new File($this->_path. '/'. $this->tree[$id]);
+		else return false;
 	}
 	
 	// On se balade avec un nom de fichier ou un ID
@@ -88,13 +97,6 @@ class Folder {
 			$this->$var = $value;
 		else throw new Exception('Variable Inconnue');
 	}//*/
-	
-	// Renvoie un fichier d'après le dossier mis en cache
-	public function getFile($id) {
-		if (isset($this->tree[$id]))
-			 return new File($this->_path. '/'. $this->tree[$id], $id);
-		else return false;
-	}
 	
 	// ToString \o/
 	public function __toString() {
