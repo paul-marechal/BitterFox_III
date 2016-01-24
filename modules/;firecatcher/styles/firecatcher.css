@@ -1,0 +1,44 @@
+.firecatcher-overlay {
+	position: absolute;
+	z-index: 999999999;
+	height: 100%;
+	width: 100%;
+	left: 0;
+	top: 0;
+	
+	background-color: rgba(0, 0, 0, 0.75);
+	text-shadow: 0 0 3px black;
+	color: white;
+}
+
+.firecatcher-modal {
+	position: absolute;
+	transform: translate(-50%, -50%);
+	left: 50%;
+	top: 50%;
+	
+	box-shadow: 0 0 10px black;
+	background-color: #333;
+	min-height: 1em;
+	min-width: 1em;
+	max-width: 300px;
+	padding: 10px;
+}
+
+.firecatcher-label {
+	
+}
+
+.firecatcher-controls > * {
+	margin-top: 10px;
+}
+
+.firecatcher-buttons {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+}
+
+.firecatcher-buttons .window-button {
+	padding: 10px;
+}

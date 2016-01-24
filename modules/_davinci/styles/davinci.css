@@ -1,0 +1,7 @@
+[app='DaVinci'] .window-content {
+	border: 1px solid #FF5722;
+	background-color: white;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: contain;
+}

@@ -1,0 +1,12 @@
+{
+	"": "Dora",
+	"jpg": "DaVinci",
+	"png": "DaVinci",
+	"gif": "DaVinci",
+	"bmp": "DaVinci",
+	"sh": "Executor",
+	"<default>": {
+		"folder": "Dora",
+		"file": "Download"
+	}
+}

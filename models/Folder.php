@@ -4,6 +4,32 @@ class Folder {
 	private $_path;
 	private $_tree;
 	
+	// Création d'un dossier
+	public static function create($path, $chmod=0777) {
+		$err = @mkdir($path) === false;
+		chmod($path, $chmod);
+		return $err;
+	}
+	
+	// Suppression
+	public static function delete($path) {
+		if (!is_dir($path)) return false;
+		
+		ls($path, function($subpath, $subfile) {
+			if (is_dir($subpath))
+				 @Folder::delete($subpath);
+			else @File::delete($subpath);
+		});
+		
+		$err = !@rmdir($path);
+		return $err;
+	}
+	
+	// Déverrouillage
+	public static function unlock($path) {
+		return !@chmod($path, 0777);
+	}
+	
 	// El Portugesh
 	public function __construct($path) {
 		$this->setPath($path);
@@ -40,6 +66,24 @@ class Folder {
 			if ($filter ? $filter($file) : true) {
 				if($file !== false) {
 					$files[] = $format ? $format($file) : $file;
+				}
+			}
+		}
+		
+		// Puis on envoie le tout
+		return $files;
+	}
+	
+	public function getFiles($filter=null, $format=null) {
+		$files = array();
+		
+		// On fetch en maaasse
+		foreach($this->_tree as $file) {
+			$realpath = $this->_path."/$file";
+			$FILE = new File($realpath);
+			if ($filter ? $filter($FILE) : true) {
+				if($file !== false) {
+					$files[$file] = $format ? $format($FILE) : $FILE;
 				}
 			}
 		}
@@ -97,6 +141,14 @@ class Folder {
 			$this->$var = $value;
 		else throw new Exception('Variable Inconnue');
 	}//*/
+	
+	public function toFile() {
+		return new File($this->_path);
+	}
+	
+	public function toFileArray() {
+		return $this->toFile()->toArray();
+	}
 	
 	// ToString \o/
 	public function __toString() {

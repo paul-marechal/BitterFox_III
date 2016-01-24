@@ -1,0 +1,32 @@
+#CONTEXTMENU {
+	position: absolute;
+	z-index: 999999999;
+	
+	min-height: 10px;
+	min-width: 10px;
+	
+	background-color: rgba(0, 0, 0, 0.8);
+	border: 1px solid #FF5722;
+	font-size: 0.9em;
+}
+
+#context-title {
+	background-color: rgba(255, 87, 34, 0.2);
+	font-size: 0.8em;
+	padding: 5px;
+}
+
+.context-item {
+	border: 1px solid transparent;
+	padding: 5px;
+}
+
+.context-item:hover {
+	background-color: rgba(255, 87, 34, 0.4);
+	border: 1px solid #FF5722;
+}
+
+hr {
+	margin: 0 5px;
+	opacity: 0.5;
+}

@@ -1,0 +1,119 @@
+/* Stuff */
+
+* {
+	box-sizing: border-box;
+	user-select: none;
+}
+
+html {
+	-webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+	
+	cursor: default;
+	
+	position: relative;
+	min-height: 600px;
+	min-width: 800px;
+	
+	font-family: "Consolas";
+	text-shadow: 0 0 3px black;
+	color: white;
+}
+
+html, body {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	
+	background-image: url(http://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-165678.jpg);
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+#LOADING_OVERLAY {
+	position: absolute;
+	z-index: 1000000;
+	height: 100%;
+	width: 100%;
+	
+	background-color: white;
+	background-image: url(./loading.gif);
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+/* Context Menu */
+
+#contextmenu {
+	display: flex;
+	flex-direction: column;
+}
+
+/* Desktop */
+
+#desktop {
+	position: relative;
+	overflow: hidden;
+	flex: 1;
+}
+
+/* Taskbar and trails */
+
+#taskbar {
+	position: relative;
+	
+	background-color: rgba(0, 0, 0, 0.9);
+	border-top: 1px solid #FF5722;
+	padding-left: 55px;
+}
+
+#trail-list {
+	display: flex;
+	flex-direction: row;
+	
+	height: 44px;
+	
+	overflow-x: auto;
+}
+
+#OpenDoor {
+	position: absolute;
+	left: 0;
+	top: 0;
+	
+	background-image: url(./OpenDoor.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: 75% 75%;
+	
+	margin-right: 11px;
+	height: 44px;
+	width: 44px;
+	
+	transition: 0.1s;
+}
+
+#OpenDoor:hover, #trail-list > *:hover{
+	background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Focus */
+
+.focused {
+	border-color: #FF5722 !important;
+}
+
+/* Cursors */
+
+.moveCurs	{cursor: move !important;}
+.resizeCurs	{cursor: nwse-resize !important;}
