@@ -30,7 +30,7 @@ $MODULE = array(
 	
 	'delete' => function() {
 		$path = post('path');
-		$err = is_dir($path) ? Folder::delete($path) : File::delete($path);
+		$err = _is_dir($path) ? Folder::delete($path) : File::delete($path);
 		return array(
 			'error' => $err
 		);
@@ -38,7 +38,6 @@ $MODULE = array(
 	
 	'unlock' => function() {
 		$path = post('path');
-		if (is_dir($path)) throw new Exception('Not a file');
 		return array(
 			'error' => File::unlock($path)
 		);

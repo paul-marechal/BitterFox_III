@@ -39,9 +39,9 @@ function loadModules() {
 
 $init = false;
 if ($module = get('m')) {
-	$init = file_exists($modinit = "modules/_$module/init.php") ? 'm' : null;
+	$init = _file_exists($modinit = "./modules/_$module/init.php") ? 'm' : null;
 } elseif ($module = get('n')) {
-	$init = file_exists($modinit = "modules/_$module/jnjt.php") ? 'n' : null;
+	$init = _file_exists($modinit = "./modules/_$module/jnjt.php") ? 'n' : null;
 }
 
 if ($init) {
@@ -76,7 +76,7 @@ if ($init) {
 	}
 	
 } else {
-	$APPNAME = basename(realpath('.')).' as "'.get_current_user().'"';
+	$APPNAME = basename(_realpath('.')).' as "'.get_current_user().'"';
 	include_once "views/home.php";
 } exit();
 

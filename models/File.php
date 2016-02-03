@@ -15,22 +15,22 @@ class File {
 	public static $mscTypes = array('mp3', 'wav', 'flv', 'wma', 'ogg');
 	
 	// Création d'un fichier
-	public static function create($path, $chmod=0777) {
-		$err = @file_put_contents($path, '') === false;
-		chmod($path, $chmod);
+	public static function create($path, $chmod=777) {
+		$err = @_touch($path) === false;
+		_chmod($path, $chmod);
 		return $err;
 	}
 	
 	// Suppression
 	public static function delete($path) {
-		if (is_dir($path)) return false;
-		$err = !@unlink($path);
+		if (_is_dir($path)) return false;
+		$err = !@_unlink($path);
 		return $err;
 	}
 	
 	// Déverrouillage
 	public static function unlock($path) {
-		return !@chmod($path, 0777);
+		return !@_chmod($path, 777);
 	}
 	
 	// Est-ce que le fichier existe ?
@@ -38,14 +38,14 @@ class File {
 	
 	// El Portugesh
 	public function __construct($path) {
-		if (file_exists($path)) {
+		if (_file_exists($path)) {
 			/*$name = basename($path);
 			if ($name == '.'
 			 or $name == '..') { // Les deux fichiers zarbis
 				throw new Exception("Le fichier est zarb: '$name'");
 			// Sinon on fait normalement
 			} else*/
-			$this->_path = realpath($path);
+			$this->_path = _realpath($path);
 		} else throw new Exception("Le fichier n'existe pas: $path");
 		
 		$this->_write = $this->isWritable();
@@ -58,24 +58,19 @@ class File {
 	
 	// Equivalent get_file_contents
 	public function read() {
-		return @file_get_contents($this->_path);
+		return @_file_get_contents($this->_path);
 	}
 	
 	// Equivalent file_put_contents
 	public function write($data) {
-		return @file_put_contents($this->_path, $data);
-	}
-	
-	// Mélange des deux
-	public function append($data) {
-		return $this->write($this->read().$data);
+		return @_file_put_contents($this->_path, $data);
 	}
 	
 	// Tests
-	public function isWritable(){return is_writable($this->_path);}
-	public function isReadable(){return is_readable($this->_path);}
-	public function isFolder()	{return is_dir($this->_path);}
-	public function isFile()	{return !is_dir($this->_path) and is_file($this->_path);}
+	public function isWritable(){return _is_writable($this->_path);}
+	public function isReadable(){return _is_readable($this->_path);}
+	public function isFolder()	{return _is_dir($this->_path);}
+	public function isFile()	{return !_is_dir($this->_path) and _is_file($this->_path);}
 	public function isImg()		{return in_array($this->ext(), File::$imgTypes);}
 	public function isMusic()	{return in_array($this->ext(), File::$mscTypes);}
 	public function isUnknown()	{return !$this->isFile();}
@@ -131,8 +126,10 @@ class File {
 			'type' => $this->_type,
 			'name' => $this->base(),
 			'ext' => $this->ext(),
-			'size' => $this->size(),
-			'owner' => $this->owner(),
+			// 'size' => $this->size(),
+			'size' => 'eheh',
+			// 'owner' => $this->owner(),
+			'owner' => 'not implemented',
 			'w' => $this->isWritable(),
 			'r' => $this->isReadable(),
 		);

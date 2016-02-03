@@ -68,7 +68,14 @@ function Window(name) {
 	};
 	
 	// Mise à jour de la fenêtre
-	window.update = function() {};
+	window.loading = function() {window.addClass('loading');};
+	window.onupdate = function() {};
+	window.update = function() {
+		window.onupdate();
+		window.removeClass('loading');
+	};
+	
+	// Rechargelent
 	window.onreload = function() {};
 	window.noreload = function() {delete window.abortReload;};
 	window.reload = function() {

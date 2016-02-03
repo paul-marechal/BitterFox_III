@@ -15,12 +15,12 @@ function post($field) {return isset($_POST[$field]) ? $_POST[$field] : null;}
 // args: directory, callback, filter, ignorePoints?
 function ls($dir, $callback=null, $filter=null, $zap=true) {
 	$result = array();
-	$realdir = realpath($dir);
-	if (empty($realdir) and !is_dir($realdir)) return false;
+	$realdir = _realpath($dir);
+	if (empty($realdir) and !_is_dir($realdir)) return false;
 	
-	foreach(scandir($realdir) as $file) {
+	foreach(_scandir($realdir) as $file) {
 		if ($zap and ($file == '.' or $file == '..')) continue;
-		$realfile = realpath("$realdir/$file");
+		$realfile = _realpath("$realdir/$file");
 		if ($filter ? $filter($realfile) : true)
 			$result[] = $callback ? $callback($realfile, $file) : $realpath;
 	} return $result;
@@ -28,11 +28,11 @@ function ls($dir, $callback=null, $filter=null, $zap=true) {
 
 // Petite récursive
 function recurse($path, $callback) {
-	$path = realpath($path);
-	foreach(scandir($path) as $file) {
+	$path = _realpath($path);
+	foreach(_scandir($path) as $file) {
 		if ($file == '.' or $file == '..') continue;
-		$realfile = realpath("$path/$file");
-		if (is_dir($realfile)) recurse($realfile, $callback);
+		$realfile = _realpath("$path/$file");
+		if (_is_dir($realfile)) recurse($realfile, $callback);
 		else $callback($realfile);
 	} $callback($path);
 }
@@ -50,3 +50,95 @@ function grab_dump($var) {
     var_dump($var);
     return ob_get_clean();
 }
+
+// ############################################################################################ //
+// 											AAAAARG
+// ############################################################################################ //
+// /*
+
+function trim_exec($cmd) {
+	return trim(shell_exec($cmd));
+}
+
+function _realpath($path) {
+	$real = trim_exec("readlink -f \"$path\"");
+	return $real ? $real : false;
+}
+
+function _sh($script, $file) {
+	$real = _realpath($file);
+	return trim_exec("\"./sh/$script.sh\" \"$real\"");
+}
+
+function _file_exists($file) {
+	return _sh('file_exists', $file) == 'exists';
+}
+
+function _file_type($file) {
+	return _sh('file_type', $file);
+}
+
+function _is_dir($file) {
+	return _file_type($file) == 'dir';
+}
+
+function _is_file($file) {
+	return _file_type($file) == 'file';
+}
+
+function _is_writable($file) {
+	return _sh('is_writable', $file) == 'writable';
+}
+
+
+function _is_readable($file) {
+	return _sh('is_readable', $file) == 'readable';
+}
+
+function _scandir($dir = '.') {
+	$real = _realpath($dir);
+	$files = trim_exec("ls -ah \"$real\"");
+	if (empty($files)) return;
+	
+	$list = explode("\n", $files);
+	foreach($list as $id => $file)
+		yield $id => $file;
+}
+
+function _file_get_contents($file) {
+	if (_file_type($file) != 'file') return false;
+	$real = _realpath($file);
+	
+	return trim_exec("cat \"$real\"");
+}
+
+function _file_put_contents($file, $data) {
+	global $TMP;
+	
+	$real = _realpath($file);
+	$tmp = "$TMP/tmp";
+	file_put_contents($tmp, $data);
+	return trim_exec("cat \"$tmp\">\"$real\" && echo ok");
+}
+
+function _unlock($file) {
+	return _chmod($file, 777);
+}
+
+function _touch($file) {
+	return trim_exec("touch \"$file\" && echo ok");
+}
+
+function _mkdir($dir) {
+	return trim_exec("mkdir \"$dir\" && echo ok");
+}
+
+function _unlink($file) {
+	return trim_exec("unlink \"$file\" && echo ok");
+}
+
+function _chmod($file, $mod=777) {
+	return trim_exec("chmod $mod \"$file\" && echo ok");
+}
+
+/**/

@@ -16,7 +16,7 @@ function StoryRewriter(path='.') {
 	};
 	
 	// Mise à jour de la fenêtre
-	window.update = function() {
+	window.onupdate = function() {
 		window.getContent(window.getPath());
 	};
 	

@@ -82,7 +82,7 @@ function Dora(path='.') {
 		window.getFiles(window.getLocation());
 	};
 	
-	window.update = function() {
+	window.onupdate = function() {
 		window.getFiles(window.getPath());
 	};
 	
@@ -94,7 +94,7 @@ function Dora(path='.') {
 			var path = window.getLocation() + '/' + name.val();
 			$.post('?m=dora', {action: 'newFolder', path: path}, function(data) {
 				if (data.error) alert('Impossible...');
-				else window.update();
+				window.update();
 				modal.out();
 			});
 		});
@@ -110,13 +110,14 @@ function Dora(path='.') {
 			var path = window.getLocation() + '/' + name.val();
 			$.post('?m=dora', {action: 'newFile', path: path}, function(data) {
 				if (data.error) alert('Impossible...');
-				else window.update();
+				window.update();
 				modal.out();
 			});
 		});
 		
 		modal.pop();
 	};
+	
 	
 	window.deleteFile = function(file) {
 		var modal = FireCatcher('Voulez-vous vraiment supprimer ce fichier : "' + file.info.path + '" ?');
@@ -125,7 +126,7 @@ function Dora(path='.') {
 		var oui = buttons.addButton('Oui', function() {
 			$.post('?m=dora', {action: 'delete', path: file.info.path}, function(data) {
 				if (data.error) alert('Impossible...');
-				else window.update();
+				window.update();
 				modal.out();
 			});
 		});

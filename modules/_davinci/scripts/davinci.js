@@ -13,7 +13,7 @@ function DaVinci(path='.') {
 		window.showImage(window.getLocation());
 	};
 	
-	window.update = function() {
+	window.onupdate = function() {
 		window.showImage(window.getPath());
 	};
 	

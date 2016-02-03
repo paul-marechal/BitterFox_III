@@ -6,7 +6,7 @@ $MODULE = array(
 		$FILE = new File($path);
 		if ($FILE->ext() != 'sh') throw new Exception('Not a .sh');
 		$script = $FILE->path;
-		shell_exec("$script &");
-		return shell_exec("ps -x");
+		return shell_exec("\"$script\"");
+		// return shell_exec("ps -x");
 	}
 );

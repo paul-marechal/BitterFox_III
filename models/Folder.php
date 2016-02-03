@@ -5,16 +5,16 @@ class Folder {
 	private $_tree;
 	
 	// Création d'un dossier
-	public static function create($path, $chmod=0777) {
-		$err = @mkdir($path) === false;
-		chmod($path, $chmod);
+	public static function create($path, $chmod=777) {
+		$err = @_mkdir($path) === false;
+		_chmod($path, $chmod);
 		return $err;
 	}
 	
 	// Suppression
 	public static function delete($path) {
-		if (!is_dir($path)) return false;
-		
+		if (!_is_dir($path)) return false;
+		/*
 		ls($path, function($subpath, $subfile) {
 			if (is_dir($subpath))
 				 @Folder::delete($subpath);
@@ -23,11 +23,14 @@ class Folder {
 		
 		$err = !@rmdir($path);
 		return $err;
+		/**/
+		
+		trim_exec("rm -rf \"$path\"");
 	}
 	
 	// Déverrouillage
 	public static function unlock($path) {
-		return !@chmod($path, 0777);
+		return !@_chmod($path, 777);
 	}
 	
 	// El Portugesh
@@ -41,11 +44,11 @@ class Folder {
 		// Update
 		if ($path == '*') $path = $this->_path;
 		
-		$path = realpath($path);
-		if (file_exists($path) and is_dir($path)) {
-			if (is_readable($path)) {
+		$path = _realpath($path);
+		if (_file_exists($path) and _is_dir($path)) {
+			if (_is_readable($path)) {
 				$this->_path = $path;
-				$this->_tree = scandir($this->_path);
+				$this->_tree = _scandir($this->_path);
 				$this->_size = count($this->_tree);
 				return $this->_path;
 			} else throw new Exception("Can't read dir: $path");
